@@ -1,0 +1,239 @@
+ @model LearnTrack.Controllers.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <!-- Registration Card -->
+            <div class="card border-0 shadow rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="text-center p-4 p-md-5 text-white"
+                     style="background: linear-gradient(120deg, #172554, #2563EB);">
+
+                    <div class="rounded-4 d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width: 80px; height: 80px; background: rgba(255,255,255,0.15);">
+                        <i class="bi bi-person-plus-fill fs-1"></i>
+                    </div>
+
+                    <div class="small fw-semibold text-white-50">
+                        JOIN LEARNTRACK
+                    </div>
+
+                    <h2 class="fw-bold mt-2 mb-2">Create Your Account</h2>
+
+                    <p class="text-white-50 mb-0">
+                        Organise your learning journey and track your progress.
+                    </p>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="card-body p-4 p-md-5">
+
+                    <form asp-action="Register" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger rounded-3"
+                             role="alert"></div>
+
+                        <!-- Personal Information -->
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-person-circle text-primary me-2"></i>
+                            Personal Information
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <!-- First Name -->
+                            <div class="col-md-6">
+                                <label asp-for="FirstName"
+                                       class="form-label fw-semibold">
+                                    First Name
+                                </label>
+
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-person text-primary"></i>
+                                    </span>
+
+                                    <input asp-for="FirstName"
+                                           class="form-control border-start-0"
+                                           placeholder="First name"
+                                           autocomplete="given-name" />
+                                </div>
+
+                                <span asp-validation-for="FirstName"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6">
+                                <label asp-for="LastName"
+                                       class="form-label fw-semibold">
+                                    Last Name
+                                </label>
+
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-person text-primary"></i>
+                                    </span>
+
+                                    <input asp-for="LastName"
+                                           class="form-control border-start-0"
+                                           placeholder="Last name"
+                                           autocomplete="family-name" />
+                                </div>
+
+                                <span asp-validation-for="LastName"
+                                      class="text-danger small"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mt-4 mb-3">
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold">
+                                Email Address
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-envelope text-primary"></i>
+                                </span>
+
+                                <input asp-for="Email"
+                                       class="form-control border-start-0"
+                                       placeholder="Enter your email address"
+                                       autocomplete="email" />
+                            </div>
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Organisation -->
+                        <div class="mb-4">
+                            <label asp-for="OrganisationName"
+                                   class="form-label fw-semibold">
+                                Organisation
+                                <span class="text-muted fw-normal small">(Optional)</span>
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-building text-primary"></i>
+                                </span>
+
+                                <input asp-for="OrganisationName"
+                                       class="form-control border-start-0"
+                                       placeholder="Enter your organisation" />
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Account Security -->
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-shield-lock text-primary me-2"></i>
+                            Account Security
+                        </h5>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold">
+                                Password
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-lock text-primary"></i>
+                                </span>
+
+                                <input asp-for="Password"
+                                       type="password"
+                                       class="form-control border-start-0"
+                                       placeholder="Create a password"
+                                       autocomplete="new-password" />
+                            </div>
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword"
+                                   class="form-label fw-semibold">
+                                Confirm Password
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-lock-fill text-primary"></i>
+                                </span>
+
+                                <input asp-for="ConfirmPassword"
+                                       type="password"
+                                       class="form-control border-start-0"
+                                       placeholder="Confirm your password"
+                                       autocomplete="new-password" />
+                            </div>
+
+                            <span asp-validation-for="ConfirmPassword"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit"
+                                class="btn btn-primary btn-lg w-100 rounded-3 fw-semibold">
+                            <i class="bi bi-person-check-fill me-2"></i>
+                            Create Account
+                        </button>
+
+                    </form>
+
+                    <!-- Login Link -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">
+                            Already have an account?
+
+                            <a asp-action="Login"
+                               class="fw-bold text-primary text-decoration-none">
+                                Sign In
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-2">
+                    <i class="bi bi-shield-check text-primary me-1"></i>
+                    Your learning journey starts here.
+                </p>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back to Home
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

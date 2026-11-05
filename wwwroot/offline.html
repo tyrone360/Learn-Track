@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2563eb">
+    <title>LearnTrack - Offline</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f7f9ff;
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        .container {
+            padding: 35px;
+            max-width: 380px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px #2563eb20;
+        }
+
+        h1 { color: #2563eb; }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LearnTrack</h1>
+        <h2>You're offline!</h2>
+        <p>Your internet connection is unavailable.</p>
+        <p>Please reconnect to continue learning.</p>
+        <button onclick="location.reload()">Try Again</button>
+    </div>
+</body>
+</html>

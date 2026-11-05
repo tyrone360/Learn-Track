@@ -1,0 +1,182 @@
+﻿
+@model ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<style>
+    .error-page {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 15px;
+    }
+
+    .error-card {
+        width: 100%;
+        max-width: 720px;
+        padding: 45px;
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 28px;
+        box-shadow: 0 20px 60px rgba(23, 37, 84, 0.09);
+        text-align: center;
+    }
+
+    .error-icon {
+        width: 85px;
+        height: 85px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border-radius: 26px;
+        background: rgba(239, 68, 68, 0.09);
+        color: #dc2626;
+        font-size: 2.5rem;
+    }
+
+    .error-card h1 {
+        color: #172554;
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .error-message {
+        color: #64748b;
+        font-size: 1.05rem;
+        margin-bottom: 25px;
+    }
+
+    .request-id {
+        display: inline-block;
+        padding: 12px 18px;
+        margin-bottom: 25px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        color: #475569;
+        overflow-wrap: anywhere;
+    }
+
+    .development-info {
+        margin-top: 20px;
+        padding: 22px;
+        background: rgba(239, 246, 255, 0.8);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 18px;
+        text-align: left;
+    }
+
+    .development-info h3 {
+        color: #1e40af;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .development-info p {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 10px;
+    }
+
+    .error-home-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 12px 23px;
+        margin-top: 25px;
+        background: linear-gradient(120deg, #172554, #2563eb);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 13px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .error-home-btn:hover {
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.22);
+    }
+
+    @@media (max-width: 576px) {
+        .error-card {
+            padding: 28px 20px;
+        }
+
+        .error-card h1 {
+            font-size: 1.8rem;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .error-home-btn {
+            transition: none;
+        }
+    }
+</style>
+
+<div class="error-page">
+    <div class="error-card">
+
+        <div class="error-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+
+        <h1>Something went wrong</h1>
+
+        <p class="error-message">
+            An unexpected error occurred while processing your request.
+            Please try again later.
+        </p>
+
+        @if (Model.ShowRequestId)
+        {
+            <div class="request-id">
+                <strong>Request ID:</strong>
+                <code>@Model.RequestId</code>
+            </div>
+        }
+
+        <div class="development-info">
+            <h3>
+                <i class="bi bi-info-circle me-2"></i>
+                Development Information
+            </h3>
+
+            <p>
+                If you are troubleshooting this application locally,
+                switching to the <strong>Development</strong> environment
+                can display more detailed error information.
+            </p>
+
+            <p>
+                <strong>Important:</strong> Never enable Development Mode
+                on a deployed application. Detailed exception messages
+                may expose sensitive information.
+            </p>
+
+            <p class="mb-0">
+                For local debugging, set the
+                <code>ASPNETCORE_ENVIRONMENT</code> environment variable
+                to <code>Development</code> and restart the application.
+            </p>
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="error-home-btn">
+            <i class="bi bi-house-door"></i>
+            Return to Home
+        </a>
+
+    </div>
+</div>

@@ -1,0 +1,149 @@
+ @model LearnTrack.Controllers.LoginViewModel
+
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-7 col-lg-5">
+
+            <!-- Login Card -->
+            <div class="card border-0 shadow rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="text-center p-4 p-md-5 text-white"
+                     style="background: linear-gradient(120deg, #172554, #2563EB);">
+
+                    <div class="rounded-4 d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width: 80px; height: 80px; background: rgba(255,255,255,0.15);">
+                        <i class="bi bi-mortarboard-fill fs-1"></i>
+                    </div>
+
+                    <div class="small fw-semibold text-white-50">
+                        WELCOME TO LEARNTRACK
+                    </div>
+
+                    <h2 class="fw-bold mt-2 mb-2">Welcome Back!</h2>
+
+                    <p class="text-white-50 mb-0">
+                        Sign in to continue your learning journey.
+                    </p>
+                </div>
+
+                <!-- Form -->
+                <div class="card-body p-4 p-md-5">
+
+                    <form asp-action="Login" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger rounded-3"
+                             role="alert"></div>
+
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold">
+                                Email Address
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-envelope text-primary"></i>
+                                </span>
+
+                                <input asp-for="Email"
+                                       class="form-control border-start-0"
+                                       placeholder="Enter your email address"
+                                       autocomplete="username" />
+                            </div>
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold">
+                                Password
+                            </label>
+
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-lock text-primary"></i>
+                                </span>
+
+                                <input asp-for="Password"
+                                       type="password"
+                                       class="form-control border-start-0"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password" />
+                            </div>
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input asp-for="RememberMe"
+                                   class="form-check-input" />
+
+                            <label asp-for="RememberMe"
+                                   class="form-check-label text-muted">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <!-- Sign In -->
+                        <button type="submit"
+                                class="btn btn-primary btn-lg w-100 rounded-3 fw-semibold">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Sign In
+                        </button>
+
+                    </form>
+
+                    <!-- Registration Link -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">
+                            Don't have an account?
+
+                            <a asp-action="Register"
+                               class="fw-bold text-primary text-decoration-none">
+                                Create one
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Security Note -->
+            <div class="text-center mt-4">
+                <div class="d-inline-flex align-items-center gap-2 text-muted small">
+                    <i class="bi bi-shield-lock-fill text-primary"></i>
+                    <span>Your learning journey starts here.</span>
+                </div>
+            </div>
+
+            <!-- Home Link -->
+            <div class="text-center mt-3">
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back to Home
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

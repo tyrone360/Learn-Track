@@ -1,0 +1,531 @@
+
+@model LearnTrack.Models.Course
+
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<style>
+    .course-create-page {
+        padding-top: 3rem;
+        padding-bottom: 4rem;
+        color: #172554;
+    }
+
+    .course-create-header {
+        margin-bottom: 2rem;
+    }
+
+    .course-create-header .back-link {
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color .2s ease;
+    }
+
+    .course-create-header .back-link:hover {
+        color: #2563eb;
+    }
+
+    .course-create-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 50px;
+        background: rgba(37, 99, 235, .09);
+        color: #2563eb;
+        font-size: .75rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .course-create-header h1 {
+        color: #172554;
+        letter-spacing: -1px;
+    }
+
+    .course-create-header p {
+        color: #64748b;
+        max-width: 600px;
+    }
+
+    .glass-course-card {
+        background: rgba(255, 255, 255, .84);
+        border: 1px solid rgba(255, 255, 255, .9);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 18px 55px rgba(23, 37, 84, .09);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .glass-course-header {
+        padding: 2rem;
+        color: white;
+        background: linear-gradient(120deg, #172554, #2563eb);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .glass-course-header::after {
+        content: "";
+        position: absolute;
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .08);
+        right: -55px;
+        top: -85px;
+    }
+
+    .course-header-icon {
+        width: 65px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 19px;
+        background: rgba(255, 255, 255, .16);
+        border: 1px solid rgba(255, 255, 255, .22);
+        font-size: 2rem;
+        flex-shrink: 0;
+    }
+
+    .glass-course-body {
+        padding: 2.5rem;
+    }
+
+    .course-form-label {
+        display: block;
+        margin-bottom: 10px;
+        color: #172554;
+        font-weight: 700;
+    }
+
+    .course-input-group {
+        display: flex;
+        align-items: stretch;
+        border: 1px solid #dbe4f0;
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(248, 250, 252, .85);
+        transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .course-input-group:focus-within {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
+    }
+
+    .course-input-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        flex-shrink: 0;
+        color: #2563eb;
+        background: rgba(37, 99, 235, .06);
+        font-size: 1.1rem;
+    }
+
+    .course-input-group .form-control {
+        min-height: 56px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #172554;
+        box-shadow: none;
+        padding: 13px 16px;
+    }
+
+    .course-input-group .form-control:focus {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .course-select-group {
+        display: flex;
+        align-items: stretch;
+        border: 1px solid #dbe4f0;
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(248, 250, 252, .85);
+        transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .course-select-group:focus-within {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
+    }
+
+    .course-select-group .form-select {
+        min-height: 56px;
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+        color: #172554;
+        box-shadow: none;
+        padding: 13px 16px;
+    }
+
+    .course-textarea {
+        min-height: 145px;
+        resize: vertical;
+        border: 1px solid #dbe4f0;
+        border-radius: 15px;
+        background: rgba(248, 250, 252, .85);
+        color: #172554;
+        padding: 16px;
+        transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .course-textarea:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
+        background: white;
+    }
+
+    .course-input-group input::placeholder,
+    .course-textarea::placeholder {
+        color: #94a3b8;
+    }
+
+    .course-form-help {
+        color: #94a3b8;
+        font-size: .83rem;
+    }
+
+    .course-validation {
+        display: block;
+        margin-top: 7px;
+    }
+
+    .course-save-btn {
+        border: 0;
+        border-radius: 14px;
+        padding: 14px 22px;
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(120deg, #172554, #2563eb);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, .2);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .course-save-btn:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(37, 99, 235, .3);
+    }
+
+    .course-cancel-btn {
+        border: 1px solid #dbe4f0;
+        border-radius: 14px;
+        padding: 14px 22px;
+        color: #475569;
+        background: rgba(255, 255, 255, .8);
+        font-weight: 700;
+        transition: all .25s ease;
+    }
+
+    .course-cancel-btn:hover {
+        color: #172554;
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .course-tip-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-top: 1.5rem;
+        padding: 22px;
+        border-radius: 20px;
+        background: rgba(239, 246, 255, .85);
+        border: 1px solid rgba(147, 197, 253, .35);
+    }
+
+    .course-tip-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 15px;
+        color: #2563eb;
+        background: white;
+        font-size: 1.4rem;
+        box-shadow: 0 5px 15px rgba(37, 99, 235, .08);
+    }
+
+    .course-tip-card h6 {
+        color: #172554;
+    }
+
+    .course-tip-card p {
+        color: #64748b;
+        line-height: 1.7;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    @@media (max-width: 576px) {
+        .course-create-page {
+            padding-top: 1.5rem;
+        }
+
+        .glass-course-header {
+            padding: 1.5rem;
+        }
+
+        .glass-course-body {
+            padding: 1.5rem;
+        }
+
+        .course-header-icon {
+            width: 54px;
+            height: 54px;
+            font-size: 1.6rem;
+        }
+
+        .course-create-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .course-tip-card {
+            padding: 17px;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .course-create-page *,
+        .course-create-page *::before,
+        .course-create-page *::after {
+            transition: none !important;
+        }
+    }
+</style>
+
+<div class="container course-create-page">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <!-- Page Heading -->
+            <div class="course-create-header">
+
+                <a asp-controller="Courses"
+                   asp-action="Index"
+                   class="back-link small">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Back to My Courses
+                </a>
+
+                <div class="mt-4">
+
+                    <span class="course-create-badge mb-3">
+                        <i class="bi bi-journal-bookmark"></i>
+                        COURSE MANAGEMENT
+                    </span>
+
+                    <h1 class="fw-bold mt-2 mb-2">
+                        Add a New Course
+                    </h1>
+
+                    <p class="mb-0">
+                        Create a course and organise your learning journey
+                        with LearnTrack.
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Glass Course Form -->
+            <div class="glass-course-card">
+
+                <!-- Card Header -->
+                <div class="glass-course-header">
+
+                    <div class="d-flex align-items-center gap-3 position-relative"
+                         style="z-index: 1;">
+
+                        <div class="course-header-icon">
+                            <i class="bi bi-journal-plus"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="fw-bold mb-1">
+                                Course Information
+                            </h5>
+
+                            <p class="small mb-0 text-white-50">
+                                Complete the information below to add your course.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Form Body -->
+                <div class="glass-course-body">
+
+                    <form asp-controller="Courses"
+                          asp-action="Create"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger rounded-3"
+                             role="alert"></div>
+
+                        <!-- Course Title -->
+                        <div class="mb-4">
+
+                            <label asp-for="Title"
+                                   class="course-form-label">
+                                <i class="bi bi-book me-1 text-primary"></i>
+                                Course Title
+                            </label>
+
+                            <div class="course-input-group">
+
+                                <span class="course-input-icon">
+                                    <i class="bi bi-book"></i>
+                                </span>
+
+                                <input asp-for="Title"
+                                       class="form-control"
+                                       placeholder="e.g. Web Development" />
+
+                            </div>
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger small course-validation"></span>
+
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4">
+
+                            <label asp-for="Category"
+                                   class="course-form-label">
+                                <i class="bi bi-grid me-1 text-primary"></i>
+                                Course Category
+                            </label>
+
+                            <div class="course-select-group">
+
+                                <span class="course-input-icon">
+                                    <i class="bi bi-collection"></i>
+                                </span>
+
+                                <select asp-for="Category"
+                                        class="form-select">
+
+                                    <option value="">Select a category</option>
+                                    <option>Programming</option>
+                                    <option>Database Management</option>
+                                    <option>Networking</option>
+                                    <option>Cybersecurity</option>
+                                    <option>Artificial Intelligence</option>
+                                    <option>Other</option>
+
+                                </select>
+
+                            </div>
+
+                            <span asp-validation-for="Category"
+                                  class="text-danger small course-validation"></span>
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+
+                            <label asp-for="Description"
+                                   class="course-form-label">
+                                <i class="bi bi-card-text me-1 text-primary"></i>
+                                Course Description
+                            </label>
+
+                            <textarea asp-for="Description"
+                                      class="form-control course-textarea"
+                                      rows="5"
+                                      placeholder="Describe what you will learn in this course..."></textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger small course-validation"></span>
+
+                            <div class="course-form-help mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Add a short explanation of the course and its
+                                learning objectives.
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" style="border-color: #e2e8f0;">
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-column flex-sm-row gap-3">
+
+                            <button type="submit"
+                                    class="btn course-save-btn flex-grow-1">
+
+                                <i class="bi bi-check-circle me-2"></i>
+                                Save Course
+
+                            </button>
+
+                            <a asp-controller="Courses"
+                               asp-action="Index"
+                               class="btn course-cancel-btn">
+
+                                <i class="bi bi-x-circle me-2"></i>
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Information Panel -->
+            <div class="course-tip-card">
+
+                <div class="course-tip-icon">
+                    <i class="bi bi-lightbulb-fill"></i>
+                </div>
+
+                <div>
+
+                    <h6 class="fw-bold mb-1">
+                        Learning Tip
+                    </h6>
+
+                    <p class="small mb-0">
+                        Give each course a clear title and description.
+                        This makes it easier to identify your courses,
+                        organise your learning activities and monitor
+                        your progress.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,753 @@
+
+@model IEnumerable<LearnTrack.Models.Course>
+
+@{
+    ViewData["Title"] = "My Courses";
+
+    var courses = Model?.ToList() ?? new List<LearnTrack.Models.Course>();
+
+    var totalCourses = courses.Count;
+
+    var averageProgress = totalCourses > 0
+        ? (int)Math.Round(courses.Average(c => c.ProgressPercentage))
+        : 0;
+
+    var completedCourses = courses.Count(c => c.ProgressPercentage == 100);
+
+    var inProgressCourses = courses.Count(c =>
+        c.ProgressPercentage > 0 && c.ProgressPercentage < 100);
+
+    var notStartedCourses = courses.Count(c => c.ProgressPercentage == 0);
+}
+
+<style>
+    .courses-page {
+        color: #172554;
+        padding-bottom: 35px;
+    }
+
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: 24px;
+        box-shadow: 0 12px 35px rgba(23, 37, 84, 0.07);
+    }
+
+    .courses-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 42px;
+        border-radius: 28px;
+        color: white;
+        background: linear-gradient(120deg, #172554, #2563eb);
+        box-shadow: 0 18px 40px rgba(37, 99, 235, 0.18);
+    }
+
+    .courses-hero::before,
+    .courses-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+    }
+
+    .courses-hero::before {
+        width: 260px;
+        height: 260px;
+        right: 8%;
+        top: -150px;
+    }
+
+    .courses-hero::after {
+        width: 190px;
+        height: 190px;
+        right: -35px;
+        bottom: -110px;
+    }
+
+    .hero-content,
+    .hero-icon {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 30px;
+        color: white;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .hero-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 125px;
+        height: 125px;
+        border-radius: 35px;
+        font-size: 75px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+    }
+
+    .section-label {
+        color: #2563eb;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+    .section-description {
+        color: #64748b;
+    }
+
+    .stat-card {
+        height: 100%;
+        padding: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 35px rgba(23, 37, 84, 0.11);
+    }
+
+    .stat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 17px;
+        font-size: 24px;
+    }
+
+    .stat-number {
+        color: #172554;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .course-card {
+        height: 100%;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .course-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 20px 40px rgba(23, 37, 84, 0.12);
+    }
+
+    .course-card .card-body {
+        padding: 26px;
+    }
+
+    .course-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 19px;
+        color: #2563eb;
+        background: rgba(37, 99, 235, 0.09);
+        font-size: 27px;
+    }
+
+    .course-category {
+        color: #2563eb;
+        font-size: 0.77rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    .course-title {
+        color: #172554;
+        font-weight: 800;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .course-description {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .course-divider {
+        border-color: rgba(148, 163, 184, 0.2);
+        margin: 20px 0;
+    }
+
+    .course-progress {
+        height: 10px;
+        overflow: hidden;
+        border-radius: 30px;
+        background: #eaf0fb;
+    }
+
+    .course-progress .progress-bar {
+        border-radius: 30px;
+        background: linear-gradient(90deg, #2563eb, #60a5fa);
+    }
+
+    .course-progress .progress-bar.completed-progress {
+        background: linear-gradient(90deg, #059669, #34d399);
+    }
+
+    .course-date {
+        color: #94a3b8;
+        font-size: 0.8rem;
+    }
+
+    .course-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .course-actions .btn {
+        flex: 1;
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 9px 12px;
+        transition: all 0.25s ease;
+    }
+
+    .course-actions .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .course-status {
+        padding: 8px 12px;
+        border-radius: 30px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-completed {
+        color: #047857;
+        background: rgba(16, 185, 129, 0.12);
+    }
+
+    .status-progress {
+        color: #1d4ed8;
+        background: rgba(37, 99, 235, 0.1);
+    }
+
+    .status-not-started {
+        color: #64748b;
+        background: rgba(100, 116, 139, 0.12);
+    }
+
+    .empty-state {
+        padding: 65px 25px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        border-radius: 32px;
+        background: rgba(37, 99, 235, 0.08);
+        color: #2563eb;
+        font-size: 48px;
+    }
+
+    .motivation-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 32px;
+    }
+
+    .motivation-icon {
+        color: #f59e0b;
+        font-size: 65px;
+    }
+
+    .glass-button {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 13px;
+        padding: 12px 22px;
+        color: #1d4ed8;
+        background: white;
+        font-weight: 700;
+        transition: all 0.25s ease;
+    }
+
+    .glass-button:hover {
+        color: #172554;
+        background: #eff6ff;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 767px) {
+        .courses-hero {
+            padding: 30px 24px;
+        }
+
+        .courses-hero h1 {
+            font-size: 2.2rem;
+        }
+
+        .hero-icon {
+            width: 90px;
+            height: 90px;
+            font-size: 52px;
+        }
+
+        .stat-number {
+            font-size: 1.7rem;
+        }
+
+        .motivation-panel {
+            padding: 25px;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .course-card,
+        .stat-card,
+        .course-actions .btn,
+        .glass-button {
+            transition: none;
+        }
+
+        .course-card:hover,
+        .stat-card:hover {
+            transform: none;
+        }
+    }
+</style>
+
+<div class="container py-5 courses-page">
+
+    <!-- Hero Section -->
+    <section class="courses-hero mb-5">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8 hero-content">
+
+                <span class="hero-label mb-3">
+                    <i class="bi bi-book-half"></i>
+                    LEARNING MANAGEMENT
+                </span>
+
+                <h1 class="display-5 fw-bold mt-3 mb-3">
+                    My Courses
+                </h1>
+
+                <p class="lead opacity-75 mb-4">
+                    Organise your courses, monitor your progress
+                    and take control of your learning journey.
+                </p>
+
+                <a asp-controller="Courses"
+                   asp-action="Create"
+                   class="glass-button text-decoration-none d-inline-flex align-items-center">
+
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Add New Course
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4 text-lg-end text-center mt-4 mt-lg-0">
+
+                <div class="hero-icon">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 rounded-4 shadow-sm mb-4"
+             role="alert">
+
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+
+        </div>
+    }
+
+    <!-- Statistics Heading -->
+    <div class="mb-4">
+
+        <span class="section-label">
+            YOUR PERFORMANCE
+        </span>
+
+        <h3 class="fw-bold mt-2 mb-1">
+            Course Overview
+        </h3>
+
+        <p class="section-description mb-0">
+            Track your learning activities and achievements.
+        </p>
+
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-6 col-xl-3">
+            <div class="glass-panel stat-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <span class="text-muted fw-semibold small">
+                        Total Courses
+                    </span>
+
+                    <div class="stat-icon bg-primary bg-opacity-10">
+                        <i class="bi bi-journal-bookmark-fill text-primary"></i>
+                    </div>
+
+                </div>
+
+                <div class="stat-number">@totalCourses</div>
+
+                <small class="text-muted">Registered courses</small>
+
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="glass-panel stat-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <span class="text-muted fw-semibold small">
+                        Average Progress
+                    </span>
+
+                    <div class="stat-icon bg-success bg-opacity-10">
+                        <i class="bi bi-graph-up-arrow text-success"></i>
+                    </div>
+
+                </div>
+
+                <div class="stat-number">@averageProgress%</div>
+
+                <small class="text-muted">Overall progress</small>
+
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="glass-panel stat-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <span class="text-muted fw-semibold small">
+                        Completed
+                    </span>
+
+                    <div class="stat-icon bg-info bg-opacity-10">
+                        <i class="bi bi-award-fill text-info"></i>
+                    </div>
+
+                </div>
+
+                <div class="stat-number">@completedCourses</div>
+
+                <small class="text-muted">Successfully completed</small>
+
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="glass-panel stat-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <span class="text-muted fw-semibold small">
+                        In Progress
+                    </span>
+
+                    <div class="stat-icon bg-warning bg-opacity-10">
+                        <i class="bi bi-clock-history text-warning"></i>
+                    </div>
+
+                </div>
+
+                <div class="stat-number">@inProgressCourses</div>
+
+                <small class="text-muted">Currently learning</small>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Course Library Heading -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+
+            <span class="section-label">
+                YOUR LEARNING LIBRARY
+            </span>
+
+            <h3 class="fw-bold mt-2 mb-1">
+                All Courses
+            </h3>
+
+            <p class="section-description mb-0">
+                Manage and monitor your registered courses.
+            </p>
+
+        </div>
+
+        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3 py-2">
+            @totalCourses @(totalCourses == 1 ? "Course" : "Courses")
+        </span>
+
+    </div>
+
+    <!-- Course Library -->
+    @if (!courses.Any())
+    {
+        <div class="glass-panel empty-state">
+
+            <div class="empty-icon mb-4">
+                <i class="bi bi-journal-plus"></i>
+            </div>
+
+            <h4 class="fw-bold mb-2">
+                Your Learning Journey Starts Here
+            </h4>
+
+            <p class="text-muted mx-auto mb-4"
+               style="max-width: 450px;">
+
+                You haven't added any courses yet.
+                Create your first course to start organising
+                and tracking your academic progress.
+
+            </p>
+
+            <a asp-controller="Courses"
+               asp-action="Create"
+               class="btn btn-primary rounded-pill px-4 py-2">
+
+                <i class="bi bi-plus-lg me-2"></i>
+                Create Your First Course
+
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var course in courses)
+            {
+                var progress = Math.Clamp(course.ProgressPercentage, 0, 100);
+
+                <div class="col-md-6 col-xl-4">
+
+                    <div class="glass-panel course-card">
+
+                        <div class="card-body d-flex flex-column">
+
+                            <!-- Course Header -->
+                            <div class="d-flex justify-content-between align-items-start mb-4">
+
+                                <div class="course-icon">
+                                    <i class="bi bi-book-half"></i>
+                                </div>
+
+                                @if (course.ProgressPercentage == 100)
+                                {
+                                    <span class="course-status status-completed">
+                                        <i class="bi bi-check-circle-fill me-1"></i>
+                                        Completed
+                                    </span>
+                                }
+                                else if (course.ProgressPercentage > 0)
+                                {
+                                    <span class="course-status status-progress">
+                                        <i class="bi bi-hourglass-split me-1"></i>
+                                        In Progress
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="course-status status-not-started">
+                                        <i class="bi bi-circle me-1"></i>
+                                        Not Started
+                                    </span>
+                                }
+
+                            </div>
+
+                            <!-- Category -->
+                            <span class="course-category mb-2">
+                                <i class="bi bi-tag me-1"></i>
+                                @(course.Category ?? "General")
+                            </span>
+
+                            <!-- Title -->
+                            <h5 class="course-title mb-2">
+                                @course.Title
+                            </h5>
+
+                            <!-- Description -->
+                            <p class="course-description flex-grow-1">
+
+                                @(string.IsNullOrWhiteSpace(course.Description)
+                                    ? "No description provided."
+                                    : course.Description)
+
+                            </p>
+
+                            <hr class="course-divider" />
+
+                            <!-- Progress -->
+                            <div class="mb-3">
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                    <span class="text-muted small fw-semibold">
+                                        Learning Progress
+                                    </span>
+
+                                    <span class="fw-bold text-primary">
+                                        @progress%
+                                    </span>
+
+                                </div>
+
+                                <div class="progress course-progress"
+                                     role="progressbar"
+                                     aria-label="Course progress"
+                                     aria-valuenow="@progress"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+
+                                    <div class="progress-bar @(progress == 100 ? "completed-progress" : "")"
+                                         style="width: @progress%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Creation Date -->
+                            <div class="course-date mb-3">
+
+                                <i class="bi bi-calendar3 me-2"></i>
+                                Created @course.CreatedAt.ToString("dd MMM yyyy")
+
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="course-actions pt-3 border-top">
+
+                                <a asp-controller="Courses"
+                                   asp-action="Edit"
+                                   asp-route-id="@course.Id"
+                                   class="btn btn-outline-primary btn-sm">
+
+                                    <i class="bi bi-pencil-square me-1"></i>
+                                    Edit
+
+                                </a>
+
+                                <form asp-controller="Courses"
+                                      asp-action="Delete"
+                                      asp-route-id="@course.Id"
+                                      method="post"
+                                      class="flex-grow-1"
+                                      onsubmit="return confirm('Are you sure you want to delete this course?');">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm w-100">
+
+                                        <i class="bi bi-trash me-1"></i>
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+    <!-- Motivation Panel -->
+    <section class="glass-panel motivation-panel mt-5">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-8">
+
+                <span class="section-label">
+                    KEEP MOVING FORWARD
+                </span>
+
+                <h4 class="fw-bold mt-2 mb-2">
+                    Every Course Takes You One Step Further.
+                </h4>
+
+                <p class="text-muted mb-md-0">
+                    Stay consistent, monitor your progress and
+                    celebrate every learning achievement.
+                </p>
+
+            </div>
+
+            <div class="col-md-4 text-md-end text-center mt-4 mt-md-0">
+
+                <i class="bi bi-trophy-fill motivation-icon"></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

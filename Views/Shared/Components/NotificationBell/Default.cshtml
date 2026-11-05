@@ -1,0 +1,69 @@
+```cshtml
+@model int
+
+<a asp-controller="Notifications"
+   asp-action="Index"
+   class="notification-bell nav-link position-relative d-inline-flex align-items-center justify-content-center"
+   title="Notifications"
+   aria-label="Notifications">
+
+    <i class="bi bi-bell-fill"></i>
+
+    @if (Model > 0)
+    {
+        <span class="notification-count">
+            @(Model > 99 ? "99+" : Model.ToString())
+        </span>
+    }
+
+</a>
+
+<style>
+    .notification-bell {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        color: #1e40af;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .notification-bell:hover {
+        color: #2563eb;
+        background: rgba(219, 234, 254, 0.8);
+        transform: translateY(-2px);
+    }
+
+    .notification-bell i {
+        font-size: 1.1rem;
+    }
+
+    .notification-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        min-width: 19px;
+        height: 19px;
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #dc2626;
+        color: white;
+        border: 2px solid white;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .notification-bell {
+            transition: none;
+        }
+    }
+</style>
+```
